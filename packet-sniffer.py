@@ -1,4 +1,3 @@
-# file: sniffer.py
 import argparse
 from datetime import datetime
 from scapy.all import sniff, PcapWriter, get_if_list
@@ -28,11 +27,11 @@ def pkt_pretty_line(pkt):
     elif UDP in pkt:
         proto = "UDP"
         extra = f"{pkt[UDP].sport}->{pkt[UDP].dport}"
-    # Nice touch: show DNS queries
+
     if pkt.haslayer(DNS) and pkt[DNS].qd and pkt[DNS].qr == 0 and isinstance(pkt[DNS].qd, DNSQR):
         extra += f" DNS? {pkt[DNS].qd.qname.decode(errors='ignore').rstrip('.')}"
 
-    # (Optional) peek at raw payload (truncate to avoid spam)
+
     if Raw in pkt:
         raw = bytes(pkt[Raw])[:24]
         extra += f" raw={raw!r}"
